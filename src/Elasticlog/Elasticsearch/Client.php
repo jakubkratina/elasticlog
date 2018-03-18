@@ -71,12 +71,15 @@ final class Client implements Contract
     }
 
     /**
+     * @param Message $message
      * @return array
      */
-    private function timestamp(): array
+    private function timestamp(Message $message): array
     {
         return [
-            $this->datetimeKey => Carbon::now()->toIso8601String(),
+            $this->datetimeKey => $message->timestamp() !== null
+                ? $message->timestamp()->toIso8601String()
+                : Carbon::now()->toIso8601String(),
         ];
     }
 
@@ -97,7 +100,16 @@ final class Client implements Contract
      */
     private function section(Message $message): string
     {
-        return str_replace('\\', '_', strtolower(get_class($message)));
+        return $message->section() ?: $this->resolveSectionFromClassName($message);
+    }
+
+    /**
+     * @param Message $message
+     * @return string
+     */
+    private function resolveSectionFromClassName(Message $message): string
+    {
+        return str_replace('\\', '_', strtolower(\get_class($message)));
     }
 
     /**
@@ -109,7 +121,7 @@ final class Client implements Contract
         return array_merge([
             'section'  => $this->section($message),
             'duration' => $message->stopwatch()->duration(),
-        ], $this->timestamp());
+        ], $this->timestamp($message));
     }
 
     /**

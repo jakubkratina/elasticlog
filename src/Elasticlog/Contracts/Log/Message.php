@@ -2,10 +2,21 @@
 
 namespace JK\Elasticlog\Contracts\Log;
 
+use Carbon\Carbon;
 use JK\Elasticlog\Stopwatch\Stopwatch;
 
 interface Message
 {
+    /**
+     * @return string|null
+     */
+    public function section(): ?string;
+
+    /**
+     * @return Carbon|null
+     */
+    public function timestamp(): ?Carbon;
+
     /**
      * @return array
      */
@@ -17,7 +28,7 @@ interface Message
     public function build(): array;
 
     /**
-     * @param string  $key
+     * @param string $key
      * @param Message $log
      */
     public function add(string $key, Message $log): void;
@@ -36,4 +47,10 @@ interface Message
      * @return Stopwatch
      */
     public function stopwatch(): Stopwatch;
+
+    /**
+     * @param Carbon $timestamp
+     * @return Message
+     */
+    public function setTimestamp(Carbon $timestamp): Message;
 }

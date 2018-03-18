@@ -2,6 +2,7 @@
 
 namespace JK\Elasticlog\Log;
 
+use Carbon\Carbon;
 use JK\Elasticlog\Contracts\Log\Message as MessageContract;
 use JK\Elasticlog\Stopwatch\Stopwatch;
 
@@ -17,6 +18,16 @@ abstract class Message implements MessageContract
      */
     protected $stopwatch;
 
+    /**
+     * @var string|null
+     */
+    protected $section;
+
+    /**
+     * @var Carbon|null
+     */
+    protected $timestamp;
+
     public function __construct()
     {
         $this->stopwatch()->start();
@@ -28,6 +39,22 @@ abstract class Message implements MessageContract
     abstract public function toArray(): array;
 
     /**
+     * @return string|null
+     */
+    public function section(): ?string
+    {
+        return $this->section;
+    }
+
+    /**
+     * @return Carbon|null
+     */
+    public function timestamp(): ?Carbon
+    {
+        return $this->timestamp;
+    }
+
+    /**
      * @return array
      */
     public function build(): array
@@ -36,7 +63,7 @@ abstract class Message implements MessageContract
     }
 
     /**
-     * @param string          $key
+     * @param string $key
      * @param MessageContract $log
      */
     public function add(string $key, MessageContract $log): void
@@ -70,6 +97,17 @@ abstract class Message implements MessageContract
         }
 
         return $this->stopwatch;
+    }
+
+    /**
+     * @param Carbon $timestamp
+     * @return MessageContract
+     */
+    public function setTimestamp(Carbon $timestamp): MessageContract
+    {
+        $this->timestamp = $timestamp;
+
+        return $this;
     }
 
     /**
