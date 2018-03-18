@@ -1,0 +1,32 @@
+{
+  "name": "jakubkratina/elasticlog",
+  "description": "Library for sending application data to elasticsearch.",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Jakub Kratina",
+      "email": "me@jakubkratina.cz"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": "^7.1",
+    "elasticsearch/elasticsearch": "6.*|5.*",
+    "symfony/stopwatch": "4.*|3.*",
+    "nesbot/carbon": "1.*",
+    "adbario/php-dot-notation": "2.*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7"
+  },
+  "autoload": {
+    "psr-4": {
+      "JK\\Elasticlog\\": "src/Elasticlog/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  }
+}
