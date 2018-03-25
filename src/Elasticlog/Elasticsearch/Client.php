@@ -55,14 +55,6 @@ final class Client implements Contract
     }
 
     /**
-     * @param string $key
-     */
-    public function setDatetimeKey(string $key): void
-    {
-        $this->datetimeKey = $key;
-    }
-
-    /**
      * @return string
      */
     private function index(): string

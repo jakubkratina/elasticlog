@@ -11,9 +11,4 @@ interface Client
      * @return array
      */
     public function log(Message $message): array;
-
-    /**
-     * @param string $key
-     */
-    public function setDatetimeKey(string $key): void;
 }
