@@ -89,7 +89,82 @@ final class ClientFactory
 ```
 
 # Usage
+## Create a message
+Create a new class extending from `JK\Elasticlog\Log\Message` and implement the `toArray` method.
+
 ```php
-/** @var Client $logger */ 
-$logger->log(new CronTaskPing('message'));
+class MyCustomMessage extends \JK\Elasticlog\Log\Message
+{
+    public function toArray(): array
+    {
+        return [
+            'foo' => 'bar'
+        ];
+    }
+}
 ```
+
+You are free to pass parameters via constructor:
+
+```php
+class MyCustomMessage extends \JK\Elasticlog\Log\Message
+{
+    private $name;
+    
+    public function __construct(string $name)
+    {
+        $this->name = $name;
+    }
+    
+    public function toArray(): array
+    {
+        return [
+            'foo' => 'bar',
+            'name' => ucfirst($this->name)
+        ];
+    }
+}
+```
+
+
+```php
+$message = new MyCustomMessage();
+
+// ... your code
+
+$logger->log($message); 
+```
+
+> The duration is measured between creating and logging a message out of the box as a `duration` property.
+
+## Available methods
+
+```php
+$message = (new Messages)->fooBarMessage();
+$message->toArray(); // ['foo' => 'bar']
+
+$message->add('a', (new Messages)->fooBarMessage());
+$message->add('b', (new Messages)->barBazMessage());
+
+$message->append((new Messages)->fooBarMessage());
+$message->append((new Messages)->barBazMessage());
+
+$message->merge([
+    'x' => 'y',
+]);
+
+$this->assertEquals([
+    'foo' => 'bar',
+    'a'   => [
+        'foo' => 'bar',
+    ],
+    'b'   => [
+        'bar' => 'baz',
+    ],
+    'bar' => 'baz',
+    'x'   => 'y',
+], $message->build());
+```
+
+
+
