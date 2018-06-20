@@ -139,6 +139,8 @@ $logger->log($message);
 
 ## Available methods
 
+`toArray`, `add`, `append`, `merge`
+
 ```php
 $message = (new Messages)->fooBarMessage();
 $message->toArray(); // ['foo' => 'bar']
