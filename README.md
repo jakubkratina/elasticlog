@@ -135,7 +135,7 @@ $message = new MyCustomMessage();
 $logger->log($message); 
 ```
 
-> The duration is measured between creating and logging a message out of the box as a `duration` property.
+> The duration between creating and logging a message is measured out of the box as a `duration` property.
 
 ## Available methods
 
